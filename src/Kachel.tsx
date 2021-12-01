@@ -1,23 +1,21 @@
 import React from 'react';
 import Feld from './Feld';
-import { KACHEL } from './Kachel.style';
+import { KACHEL, KACHEL_CELL, KACHEL_ROW, KACHEL_TABLE } from './Kachel.style';
 
 export default function Kachel() {
   return (
     <KACHEL>
-        <table>
-            <tbody>
-                <tr>
-                <td><Feld/></td><td><Feld/></td><td><Feld/></td>
-                </tr>
-                <tr>
-                <td><Feld/></td><td><Feld/></td><td><Feld/></td>
-                </tr>
-                <tr>
-                <td><Feld/></td><td><Feld/></td><td><Feld/></td>
-                </tr>
-            </tbody>
-        </table>
+      <KACHEL_TABLE>
+        <KACHEL_ROW>
+          <KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL>
+        </KACHEL_ROW>
+        <KACHEL_ROW>
+          <KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL>
+        </KACHEL_ROW>
+        <KACHEL_ROW>
+          <KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL><KACHEL_CELL><Feld/></KACHEL_CELL>
+        </KACHEL_ROW>
+      </KACHEL_TABLE>
       </KACHEL>
   );
 }
