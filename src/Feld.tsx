@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect,  useState } from 'react';
+import { useStore } from 'react-redux';
 import { FELD } from './Feld.style';
 
+type feldProps={
+  x:number;
+  y:number;
+}
 
-let number=0;
-export default function Feld() {
+
+export default function Feld(props:feldProps) {
+  const {field}=useStore().getState();
+  const [fieldValue,setFieldValue]=useState(-1);
+  
+  useEffect(() => {
+    setFieldValue(field[props.x][props.y]);
+  }, [field,props])
   return (
     <FELD>
-      {(number++%9)+1}
+      {fieldValue}
     </FELD>
   );
 }
