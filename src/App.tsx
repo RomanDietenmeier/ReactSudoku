@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { APP, TABLE, TABLE_CELL, TABLE_ROW } from './App.style';
 import Kachel from './Kachel';
-import { setField } from './redux/fieldActions';
-
+import { setField, solveField } from './redux/fieldActions';
 
 export default function App() {
   const dispatch=useDispatch();
@@ -21,7 +20,13 @@ export default function App() {
       [0,0,0,0,8,0,0,7,9]]));
   }, [dispatch]);
 
+  function onClickSolve(){
+    dispatch(solveField());
+  }
+  
+
   return (
+    <div>
       <APP>
         <TABLE>
           <TABLE_ROW>
@@ -35,5 +40,7 @@ export default function App() {
           </TABLE_ROW>
         </TABLE>
       </APP>
+      <button onClick={onClickSolve}>Solve</button>
+    </div>
   );
 }

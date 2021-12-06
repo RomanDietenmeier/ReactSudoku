@@ -13,7 +13,7 @@ export function possible(x:number,y:number,n: number,field: Array<Array<number>>
     return true;
 }
 
-export function solve(field:Array<Array<number>>){
+export function solve(field:Array<Array<number>>):Array<Array<number>>{
     for(let y=0;y<9;y++){
         for(let x=0;x<9;x++){
             if(field[x][y]===0){
@@ -24,13 +24,14 @@ export function solve(field:Array<Array<number>>){
                         field[x][y]=0;
                     }
                 }
-                return;
+                return field;
             }
         }
-
+       
     }
-    printField(field);
-    return;//if you do not return here, the function will check for more solutions
+    console.log('why?');
+    printField(field);  
+    return field;//if you do not return here, the function will check for more solutions
 }
 
 export function printField(field:Array<Array<number>>){

@@ -17,7 +17,7 @@ export default function Kachel(props:KachelProps) {
           <KACHEL_CELL><Feld x={props.x*3} y={props.y*3}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+1} y={props.y*3}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+2} y={props.y*3}/></KACHEL_CELL>
         </KACHEL_ROW>
         <KACHEL_ROW>
-          <KACHEL_CELL><Feld x={props.x*3} y={props.y*3+1}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+1} y={props.y*3+1}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+2} y={props.y*3+2}/></KACHEL_CELL>
+          <KACHEL_CELL><Feld x={props.x*3} y={props.y*3+1}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+1} y={props.y*3+1}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+2} y={props.y*3+1}/></KACHEL_CELL>
         </KACHEL_ROW>
         <KACHEL_ROW>
           <KACHEL_CELL><Feld x={props.x*3} y={props.y*3+2}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+1} y={props.y*3+2}/></KACHEL_CELL><KACHEL_CELL><Feld x={props.x*3+2} y={props.y*3+2}/></KACHEL_CELL>
