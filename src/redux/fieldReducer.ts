@@ -12,17 +12,9 @@ export const fieldReducer=(state=initialState,action:setFieldAction|solveFieldAc
             };
         }
         case SOLVE_FIELD:{
-            //ToDo does not work
-            let newField=new Array<Array<number>>(9);
-            for(let i=0;i<state.field.length;i++){
-                newField[i]=new Array<number>(9);
-                for( let j=0;j<state.field.length;j++){
-                    newField[i][j]=state.field[i][j];                    
-                }
-            }
+            solve(state.field);
             return {
                 ...state,
-                field:solve(newField)
             };
         }
         default:

@@ -1,6 +1,7 @@
-import React, { useEffect,  useState } from 'react';
-import { useStore } from 'react-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { FELD } from './Feld.style';
+import { initialState } from './redux/initialState';
 
 type feldProps={
   x:number;
@@ -8,16 +9,18 @@ type feldProps={
 }
 
 
-export default function Feld(props:feldProps) {
-  const {field}=useStore().getState();
-  const [fieldValue,setFieldValue]=useState(-1);
+export  function Feld(props:{value:number}) {
   
-  useEffect(() => {
-    setFieldValue(field[props.x][props.y]);
-  }, [field,props])
   return (
     <FELD>
-      {fieldValue}
+      {props.value}
     </FELD>
   );
 }
+function mapStateToProps(state:typeof initialState, ownProps:feldProps) {
+  return{
+    value:state.field[ownProps.x][ownProps.y],
+  }
+}
+
+export default connect(mapStateToProps)(Feld);
