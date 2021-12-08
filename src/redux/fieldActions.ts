@@ -1,4 +1,4 @@
-import { SET_FIELD, SOLVE_FIELD } from "./reduxTypes"
+import { CLEAR_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes"
 
 export const setField=(field:Array<Array<number>>)=>{
     return {
@@ -18,6 +18,12 @@ export const solveField=()=>{
     }
 }
 
-export type solveFieldAction={
+export const clearField=()=>{
+    return{
+        type: CLEAR_FIELD,
+    }
+}
+
+export type typeOnlyAction={
     type:string
 }
