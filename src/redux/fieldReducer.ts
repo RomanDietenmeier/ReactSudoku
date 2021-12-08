@@ -1,7 +1,7 @@
-import {  solve } from "../sudokuLogik/sudokuFunctions";
+import {  solve, solveRDM } from "../sudokuLogik/sudokuFunctions";
 import { setFieldAction, typeOnlyAction } from "./fieldActions";
 import { initialState } from "./initialState";
-import { CLEAR_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes";
+import { CLEAR_FIELD, RANDOM_SOLVE_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes";
 
 export const fieldReducer=(state=initialState,action:setFieldAction|typeOnlyAction): {field:Array<Array<number>>}=>{
     switch(action.type){
@@ -13,6 +13,12 @@ export const fieldReducer=(state=initialState,action:setFieldAction|typeOnlyActi
         }
         case SOLVE_FIELD:{
             solve(state.field);
+            return {
+                ...state,
+            };
+        }
+        case RANDOM_SOLVE_FIELD:{
+            solveRDM(state.field);
             return {
                 ...state,
             };

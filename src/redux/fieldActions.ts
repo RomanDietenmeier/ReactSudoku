@@ -1,4 +1,4 @@
-import { CLEAR_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes"
+import { CLEAR_FIELD, RANDOM_SOLVE_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes"
 
 export const setField=(field:Array<Array<number>>)=>{
     return {
@@ -15,6 +15,12 @@ export type setFieldAction={
 export const solveField=()=>{
     return{
         type: SOLVE_FIELD,
+    }
+}
+
+export const randomSolveField=()=>{
+    return{
+        type: RANDOM_SOLVE_FIELD,
     }
 }
 

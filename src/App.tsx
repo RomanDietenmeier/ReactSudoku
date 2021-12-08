@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { APP, TABLE, TABLE_CELL, TABLE_ROW } from './App.style';
 import Kachel from './Kachel';
-import { clearField, setField, solveField } from './redux/fieldActions';
+import { clearField, randomSolveField, setField, solveField } from './redux/fieldActions';
 
 export default function App() {
   const dispatch=useDispatch();
@@ -22,6 +22,10 @@ export default function App() {
 
   function onClickSolve(){
     dispatch(solveField());
+  }
+
+  function onClickRandomSolve(){
+    dispatch(randomSolveField());
   }
   
   function onClickClear(){
@@ -43,7 +47,7 @@ export default function App() {
           </TABLE_ROW>
         </TABLE>
       </APP>
-      <button onClick={onClickSolve}>Solve</button><button onClick={onClickClear}>CLEAR</button>
+      <button onClick={onClickSolve}>Solve</button><button onClick={onClickRandomSolve}>Random Solve</button><button onClick={onClickClear}>CLEAR</button>
     </div>
   );
 }
