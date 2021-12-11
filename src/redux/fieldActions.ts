@@ -1,35 +1,60 @@
-import { CLEAR_FIELD, RANDOM_SOLVE_FIELD, SET_FIELD, SOLVE_FIELD } from "./reduxTypes"
+import {
+  CLEAR_GAME,
+  CREATE_GAME,
+  RANDOM_SOLVE_GAME,
+  REVERSE_SOLVE_GAME,
+  SET_GAME,
+  SOLVE_GAME,
+} from "./reduxTypes";
 
-export const setField=(field:Array<Array<number>>)=>{
-    return {
-        type: SET_FIELD,
-        field: field
-    }
-}
+export const setField = (field: Array<Array<number>>) => {
+  return {
+    type: SET_GAME,
+    field: field,
+  };
+};
 
-export type setFieldAction={
-    type:string,
-    field:Array<Array<number>>
-}
+export type setFieldAction = {
+  type: string;
+  field: Array<Array<number>>;
+};
 
-export const solveField=()=>{
-    return{
-        type: SOLVE_FIELD,
-    }
-}
+export const solveGame = () => {
+  return {
+    type: SOLVE_GAME,
+  };
+};
 
-export const randomSolveField=()=>{
-    return{
-        type: RANDOM_SOLVE_FIELD,
-    }
-}
+export const reverseSolveGame = () => {
+  return {
+    type: REVERSE_SOLVE_GAME,
+  };
+};
 
-export const clearField=()=>{
-    return{
-        type: CLEAR_FIELD,
-    }
-}
+export const randomSolveGame = () => {
+  return {
+    type: RANDOM_SOLVE_GAME,
+  };
+};
 
-export type typeOnlyAction={
-    type:string
-}
+export const clearGame = () => {
+  return {
+    type: CLEAR_GAME,
+  };
+};
+
+export type createGameAction = {
+  type: string;
+  cues: number;
+};
+
+export const createGame = (cues = 17) => {
+  return {
+    type: CREATE_GAME,
+    cues: cues,
+  };
+};
+
+export type typeOnlyAction = {
+  type: string;
+};
