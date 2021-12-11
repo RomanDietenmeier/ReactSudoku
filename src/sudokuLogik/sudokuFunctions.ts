@@ -65,7 +65,7 @@ function randomRange(start = 1, end = 9): Array<number> {
   }
   let ret: number[] = [];
   for (let i = start; i <= end; i++) {
-    const idx = Math.floor(Math.random() * (normalRange.length - 1));
+    const idx = Math.floor(Math.random() * normalRange.length);
     ret.push(normalRange[idx]);
     normalRange.splice(idx, 1);
   }
@@ -126,8 +126,6 @@ export function createSudoku(clues = 17): Array<Array<number>> {
             if (setField) break;
             for (let y of fieldY) {
               if (setField) break;
-              // const x = 3 * kachelValueX + Math.floor(Math.random() * 3);
-              // const y = 3 * kachelValueY + Math.floor(Math.random() * 3);
               if (sudoku[x][y] === 0) {
                 const possibleValues = randomRange(1, 9);
                 let backtrack = true;
@@ -165,8 +163,6 @@ export function createSudoku(clues = 17): Array<Array<number>> {
 
   return sudoku;
 }
-
-console.log("createSudoku", printField(createSudoku()));
 
 export function printField(field: Array<Array<number>>) {
   let txt = "";
