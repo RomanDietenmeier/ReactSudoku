@@ -83,17 +83,17 @@ export function printAll(field: Array<Array<number>>) {
   printField(field);
 }
 
-printAll([
-  [0, 0, 0, 0, 7, 0, 0, 0, 0],
-  [6, 0, 0, 1, 9, 5, 0, 0, 0],
-  [0, 9, 8, 0, 0, 0, 0, 6, 0],
-  [8, 0, 0, 0, 6, 0, 0, 0, 3],
-  [4, 0, 0, 8, 0, 3, 0, 0, 1],
-  [7, 0, 0, 0, 2, 0, 0, 0, 6],
-  [0, 6, 0, 0, 0, 0, 2, 8, 0],
-  [0, 0, 0, 4, 1, 9, 0, 0, 5],
-  [0, 0, 0, 0, 8, 0, 0, 7, 9],
-]);
+// printAll([
+//   [0, 0, 0, 0, 7, 0, 0, 0, 0],
+//   [6, 0, 0, 1, 9, 5, 0, 0, 0],
+//   [0, 9, 8, 0, 0, 0, 0, 6, 0],
+//   [8, 0, 0, 0, 6, 0, 0, 0, 3],
+//   [4, 0, 0, 8, 0, 3, 0, 0, 1],
+//   [7, 0, 0, 0, 2, 0, 0, 0, 6],
+//   [0, 6, 0, 0, 0, 0, 2, 8, 0],
+//   [0, 0, 0, 4, 1, 9, 0, 0, 5],
+//   [0, 0, 0, 0, 8, 0, 0, 7, 9],
+// ]);
 
 export function reverseSolve(field: Array<Array<number>>): boolean {
   for (let y = 0; y < 9; y++) {
@@ -241,4 +241,23 @@ export function copyField(field: Array<Array<number>>): Array<Array<number>> {
     copy[x] = field[x].slice();
   }
   return copy;
+}
+
+export function hasOneSolution(field: Array<Array<number>>): boolean {
+  const f1 = copyField(field);
+  const f2 = copyField(field);
+  solve(f1);
+  reverseSolve(f2);
+
+  for (let x = 0; x < f1.length; x++) {
+    for (let y = 0; y < f1[x].length; y++) {
+      if (f1[x][y] !== f2[x][y]) {
+        console.log("unequal");
+        printField(f1);
+        printField(f2);
+        return false;
+      }
+    }
+  }
+  return true;
 }

@@ -4,12 +4,13 @@ import { APP, TABLE, TABLE_CELL, TABLE_ROW } from './App.style';
 import Kachel from './Kachel';
 import { clearGame, createGame, randomSolveGame, reverseSolveGame, setField, solveGame } from './redux/fieldActions';
 import { store } from './redux/store';
-import { copyField, solveAble } from './sudokuLogik/sudokuFunctions';
+import { copyField, hasOneSolution, solveAble } from './sudokuLogik/sudokuFunctions';
 
 export default function App() {
   const dispatch = useDispatch();
   const createTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const [solvableText, setSolvableText] = useState('Solvable');
+  const [oneSolutionText, setOneSolutionText] = useState('OneSolution?');
 
   useEffect(() => {
     dispatch(setField([
@@ -50,6 +51,11 @@ export default function App() {
     setSolvableText('' + solveAble(copyField(field)));
   }
 
+  function onClickOneSolution() {
+    const { field } = store.getState();
+    setOneSolutionText('' + hasOneSolution(field));
+  }
+
   return (
     <div>
       <APP>
@@ -66,7 +72,8 @@ export default function App() {
         </TABLE>
       </APP>
       <div><button onClick={onClickCreate}>Create</button><textarea ref={createTextAreaRef}></textarea></div>
-      <button onClick={onClickSolvable}>{solvableText}</button><button onClick={onClickSolve}>Solve</button><button onClick={onClickReverseSolve}>Reverse Solve</button><button onClick={onClickRandomSolve}>Random Solve</button><button onClick={onClickClear}>CLEAR</button>
+      <div><button onClick={onClickSolvable}>{solvableText}</button><button onClick={onClickOneSolution}>{oneSolutionText}</button></div>
+      <button onClick={onClickSolve}>Solve</button><button onClick={onClickReverseSolve}>Reverse Solve</button><button onClick={onClickRandomSolve}>Random Solve</button><button onClick={onClickClear}>CLEAR</button>
     </div>
   );
 }
