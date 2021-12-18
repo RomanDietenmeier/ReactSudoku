@@ -1,3 +1,26 @@
+let solvesCount = 0;
+
+function solves(field: Array<Array<number>>) {
+  if (solvesCount > 1) {
+    return;
+  }
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 9; x++) {
+      if (field[x][y] === 0) {
+        for (let i = 1; i < 10; i++) {
+          if (possible(x, y, i, field)) {
+            field[x][y] = i;
+            solves(field);
+            field[x][y] = 0;
+          }
+        }
+        return;
+      }
+    }
+  }
+  solvesCount++;
+}
+
 export function possible(
   x: number,
   y: number,
@@ -224,6 +247,115 @@ export function badCreateSudoku(clues = 17): Array<Array<number>> {
   return sudoku;
 }
 
+export function goodCreateSudoku(clues = 30): Array<Array<number>> {
+  if (clues < 17 || clues > 75) {
+    clues = 17;
+  }
+  let sudoku = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+
+  setField(sudoku, 0, clues);
+  console.log("done");
+  return sudoku;
+}
+
+function setField(
+  sudoku: Array<Array<number>>,
+  clues = 0,
+  targetClues = 30
+): boolean {
+  console.log(`clues ${clues}/${targetClues}`);
+  if (clues >= targetClues) {
+    return hasOneSolution(sudoku) === 1;
+  }
+  const values = randomRange(1, 9);
+  const xValues = randomRange(0, 8);
+  const yValues = randomRange(0, 8);
+  for (const x of xValues) {
+    for (const y of yValues) {
+      if (sudoku[x][y] !== 0) continue;
+      for (const value of values) {
+        if (possible(x, y, value, sudoku)) {
+          sudoku[x][y] = value;
+          if (hasOneSolution(sudoku) > 0) {
+            if (setField(sudoku, clues + 1, targetClues)) return true;
+          }
+          console.log("backtrack");
+
+          sudoku[x][y] = 0;
+        }
+      }
+      return false;
+    }
+  }
+  return false;
+}
+
+export function newBadCreateSudoku(clues = 17): Array<Array<number>> {
+  if (clues < 17 || clues > 75) {
+    clues = 17;
+  }
+  let sudoku = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+  let cluesSet = 0;
+  let kachelOneByOne: Array<number> = [];
+  let valueOneByOne: Array<number> = [];
+  while (cluesSet < clues) {
+    if (kachelOneByOne.length <= 0) {
+      kachelOneByOne = randomRange(0, 8);
+    }
+    if (valueOneByOne.length <= 0) {
+      valueOneByOne = randomRange(1, 9);
+    }
+    const kachelOneByOneValue = kachelOneByOne.pop();
+    if (kachelOneByOneValue === undefined) {
+      console.error("POP ERROR");
+      return [];
+    }
+    const kachelX = Math.floor(kachelOneByOneValue % 3);
+    const kachelY = Math.floor(kachelOneByOneValue / 3);
+
+    const x = Math.floor(Math.random() * 3) + 3 * kachelX;
+    const y = Math.floor(Math.random() * 3) + 3 * kachelY;
+
+    if (sudoku[x][y] === 0) {
+      const value = valueOneByOne.pop();
+      if (value === undefined) {
+        console.error("POP ERROR");
+        return [];
+      }
+      if (possible(x, y, value, sudoku)) {
+        sudoku[x][y] = value;
+        if (hasOneSolution(sudoku) === 1) {
+          cluesSet++;
+          break;
+        } else {
+          sudoku[x][y] = 0;
+        }
+      }
+    }
+  }
+  return sudoku;
+}
+
 export function getClueCount(sudoku: Array<Array<number>>): number {
   let clues = 0;
   for (let x = 0; x < sudoku.length; x++) {
@@ -324,29 +456,6 @@ export const SolutionStates = {
   MultipleSolutions: "Multiple Solutions",
   Solving: "Solving",
 };
-
-let solvesCount = 0;
-
-function solves(field: Array<Array<number>>) {
-  if (solvesCount > 1) {
-    return;
-  }
-  for (let y = 0; y < 9; y++) {
-    for (let x = 0; x < 9; x++) {
-      if (field[x][y] === 0) {
-        for (let i = 1; i < 10; i++) {
-          if (possible(x, y, i, field)) {
-            field[x][y] = i;
-            solves(field);
-            field[x][y] = 0;
-          }
-        }
-        return;
-      }
-    }
-  }
-  solvesCount++;
-}
 
 export function hasOneSolution(field: Array<Array<number>>): number {
   solvesCount = 0;

@@ -4,7 +4,7 @@ import { APP, TABLE, TABLE_CELL, TABLE_ROW } from './App.style';
 import Kachel from './Kachel';
 import { clearGame, createGame, randomSolveGame, reverseSolveGame, setField, solveGame } from './redux/fieldActions';
 import { store } from './redux/store';
-import { copyField, createSudoku, getDifficultyScore, solveAble, hasOneSolution, getClueCount } from './sudokuLogik/sudokuFunctions';
+import { copyField, createSudoku, getDifficultyScore, solveAble, hasOneSolution, getClueCount, newBadCreateSudoku, goodCreateSudoku } from './sudokuLogik/sudokuFunctions';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -48,6 +48,16 @@ export default function App() {
     dispatch(createGame(isNaN(number) ? 17 : number));
   }
 
+  function onNewBadClickCreate() {
+    let number = parseInt(createTextAreaRef.current ? createTextAreaRef.current.value : '17');
+    dispatch(setField(newBadCreateSudoku(isNaN(number) ? 17 : number)));
+  }
+
+  function onGoodCreate() {
+    let number = parseInt(createTextAreaRef.current ? createTextAreaRef.current.value : '30');
+    dispatch(setField(goodCreateSudoku(isNaN(number) ? 30 : number)));
+  }
+
   function onClickCreate() {
     dispatch(setField(createSudoku()));
   }
@@ -87,7 +97,7 @@ export default function App() {
           </TABLE_ROW>
         </TABLE>
       </APP>
-      <div><button onClick={onBadClickCreate}>BadCreate</button><textarea ref={createTextAreaRef}></textarea></div>
+      <div><button onClick={onBadClickCreate}>BadCreate</button><button onClick={onNewBadClickCreate}>NewBadCreate</button><button onClick={onGoodCreate}>goodCreate?</button><textarea ref={createTextAreaRef}></textarea></div>
       <div><button onClick={onClickCreate}>Create</button></div>
       <div><button onClick={onClickSolvable}>{solvableText}</button><button onClick={onClickOneSolution}>{oneSolutionText}</button><button onClick={onClickGetScore}>{scoreText}</button><button onClick={onClickGetClueCount}>{clueCount}</button></div>
       <button onClick={onClickSolve}>Solve</button><button onClick={onClickReverseSolve}>Reverse Solve</button><button onClick={onClickRandomSolve}>Random Solve</button><button onClick={onClickClear}>CLEAR</button>
