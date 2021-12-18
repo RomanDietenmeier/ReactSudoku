@@ -151,7 +151,7 @@ export function solveRDM(field: Array<Array<number>>): boolean {
   return true; //if you do not return here, the function will check for more solutions
 }
 
-export function createSudoku(clues = 17): Array<Array<number>> {
+export function badCreateSudoku(clues = 17): Array<Array<number>> {
   if (clues < 17 || clues > 75) {
     clues = 17;
   }
@@ -224,6 +224,81 @@ export function createSudoku(clues = 17): Array<Array<number>> {
   return sudoku;
 }
 
+export function getClueCount(sudoku: Array<Array<number>>): number {
+  let clues = 0;
+  for (let x = 0; x < sudoku.length; x++) {
+    for (let y = 0; y < sudoku[x].length; y++) {
+      if (sudoku[x][y] !== 0) clues++;
+    }
+  }
+  return clues;
+}
+
+export function getDifficultyScore(sudoku: Array<Array<number>>): number {
+  const clues = getClueCount(sudoku);
+  let score = 0;
+  for (let x = 0; x < sudoku.length; x++) {
+    for (let y = 0; y < sudoku[x].length; y++) {
+      if (sudoku[x][y] !== 0) continue;
+      let possibilities = 0;
+      for (let value = 1; value <= 9; value++) {
+        if (possible(x, y, value, sudoku)) possibilities++;
+      }
+      score += Math.pow(possibilities - 1, 2);
+    }
+  }
+  return score / clues;
+}
+
+export function createSudoku(): Array<Array<number>> {
+  let sudoku = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+  let rdmX = Math.floor(Math.random() * 3);
+  let rdmY = Math.floor(Math.random() * 3);
+  let rdmRange = randomRange(1, 9);
+  for (let x = rdmX * 3; x < rdmX * 3 + 3; x++) {
+    for (let y = rdmY * 3; y < rdmY * 3 + 3; y++) {
+      const value = rdmRange.pop();
+      if (value) sudoku[x][y] = value;
+    }
+  }
+  solveRDM(sudoku);
+  const originalSudoku = copyField(sudoku);
+  let bestSudoku = originalSudoku;
+  let bestScore = 0;
+  let tries = 0;
+  while (tries < 1000) {
+    rdmX = Math.floor(Math.random() * 9);
+    rdmY = Math.floor(Math.random() * 9);
+    let value = sudoku[rdmX][rdmY];
+    if (value === 0) continue;
+    sudoku[rdmX][rdmY] = 0;
+
+    if (hasOneSolution(sudoku) !== 1) {
+      sudoku[rdmX][rdmY] = value;
+      tries++;
+      const score = getDifficultyScore(sudoku);
+      if (score > bestScore) {
+        bestSudoku = copyField(sudoku);
+        bestScore = score;
+      }
+      sudoku = copyField(originalSudoku);
+    }
+  }
+  return bestSudoku;
+}
+
+// createSudoku();
+
 export function printField(field: Array<Array<number>>) {
   let txt = "";
   for (let y = 0; y < 9; y++) {
@@ -243,7 +318,43 @@ export function copyField(field: Array<Array<number>>): Array<Array<number>> {
   return copy;
 }
 
-export function hasOneSolution(field: Array<Array<number>>): boolean {
+export const SolutionStates = {
+  NoSolution: "No Solution",
+  OneSolution: "One Solution",
+  MultipleSolutions: "Multiple Solutions",
+  Solving: "Solving",
+};
+
+let solvesCount = 0;
+
+function solves(field: Array<Array<number>>) {
+  if (solvesCount > 1) {
+    return;
+  }
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 9; x++) {
+      if (field[x][y] === 0) {
+        for (let i = 1; i < 10; i++) {
+          if (possible(x, y, i, field)) {
+            field[x][y] = i;
+            solves(field);
+            field[x][y] = 0;
+          }
+        }
+        return;
+      }
+    }
+  }
+  solvesCount++;
+}
+
+export function hasOneSolution(field: Array<Array<number>>): number {
+  solvesCount = 0;
+  solves(copyField(field));
+  return solvesCount;
+}
+
+export function badHasOneSolution(field: Array<Array<number>>): boolean {
   const f1 = copyField(field);
   const f2 = copyField(field);
   solve(f1);

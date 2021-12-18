@@ -1,5 +1,5 @@
 import {
-  createSudoku,
+  badCreateSudoku,
   reverseSolve,
   solve,
   solveRDM,
@@ -67,7 +67,7 @@ export const fieldReducer = (
     case CREATE_GAME: {
       return {
         ...state,
-        field: createSudoku((action as createGameAction).cues),
+        field: badCreateSudoku((action as createGameAction).cues),
       };
     }
     default:

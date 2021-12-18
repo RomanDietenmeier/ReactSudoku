@@ -4,13 +4,15 @@ import { APP, TABLE, TABLE_CELL, TABLE_ROW } from './App.style';
 import Kachel from './Kachel';
 import { clearGame, createGame, randomSolveGame, reverseSolveGame, setField, solveGame } from './redux/fieldActions';
 import { store } from './redux/store';
-import { copyField, hasOneSolution, solveAble } from './sudokuLogik/sudokuFunctions';
+import { copyField, createSudoku, getDifficultyScore, solveAble, hasOneSolution, getClueCount } from './sudokuLogik/sudokuFunctions';
 
 export default function App() {
   const dispatch = useDispatch();
   const createTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const [solvableText, setSolvableText] = useState('Solvable');
   const [oneSolutionText, setOneSolutionText] = useState('OneSolution?');
+  const [scoreText, setScoreText] = useState('Calc Score');
+  const [clueCount, setClueCount] = useState('Clue Count');
 
   useEffect(() => {
     dispatch(setField([
@@ -41,9 +43,13 @@ export default function App() {
     dispatch(clearGame());
   }
 
-  function onClickCreate() {
+  function onBadClickCreate() {
     let number = parseInt(createTextAreaRef.current ? createTextAreaRef.current.value : '17');
     dispatch(createGame(isNaN(number) ? 17 : number));
+  }
+
+  function onClickCreate() {
+    dispatch(setField(createSudoku()));
   }
 
   function onClickSolvable() {
@@ -54,6 +60,16 @@ export default function App() {
   function onClickOneSolution() {
     const { field } = store.getState();
     setOneSolutionText('' + hasOneSolution(field));
+  }
+
+  function onClickGetScore() {
+    const { field } = store.getState();
+    setScoreText('' + getDifficultyScore(field));
+  }
+
+  function onClickGetClueCount() {
+    const { field } = store.getState();
+    setClueCount('' + getClueCount(field));
   }
 
   return (
@@ -71,8 +87,9 @@ export default function App() {
           </TABLE_ROW>
         </TABLE>
       </APP>
-      <div><button onClick={onClickCreate}>Create</button><textarea ref={createTextAreaRef}></textarea></div>
-      <div><button onClick={onClickSolvable}>{solvableText}</button><button onClick={onClickOneSolution}>{oneSolutionText}</button></div>
+      <div><button onClick={onBadClickCreate}>BadCreate</button><textarea ref={createTextAreaRef}></textarea></div>
+      <div><button onClick={onClickCreate}>Create</button></div>
+      <div><button onClick={onClickSolvable}>{solvableText}</button><button onClick={onClickOneSolution}>{oneSolutionText}</button><button onClick={onClickGetScore}>{scoreText}</button><button onClick={onClickGetClueCount}>{clueCount}</button></div>
       <button onClick={onClickSolve}>Solve</button><button onClick={onClickReverseSolve}>Reverse Solve</button><button onClick={onClickRandomSolve}>Random Solve</button><button onClick={onClickClear}>CLEAR</button>
     </div>
   );
