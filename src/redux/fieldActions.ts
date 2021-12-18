@@ -10,13 +10,13 @@ import {
 export const setField = (field: Array<Array<number>>) => {
   return {
     type: SET_GAME,
-    field: field,
+    sudoku: field,
   };
 };
 
 export type setFieldAction = {
   type: string;
-  field: Array<Array<number>>;
+  sudoku: Array<Array<number>>;
 };
 
 export const solveGame = () => {

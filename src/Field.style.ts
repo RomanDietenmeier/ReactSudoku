@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-export const FELD = styled.div`
+export const FieldDiv = styled.div`
   border: solid 1px black;
 
   padding: 5px;
 
-  display: grid;
-  flex-direction: row;
+  display: table-cell;
 
   align-items: center;
   text-align: center;

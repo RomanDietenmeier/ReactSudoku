@@ -1,5 +1,6 @@
 import {
   badCreateSudoku,
+  copyField,
   reverseSolve,
   solve,
   solveRDM,
@@ -22,36 +23,42 @@ import {
 export const fieldReducer = (
   state = initialState,
   action: setFieldAction | typeOnlyAction
-): { field: Array<Array<number>> } => {
+): { sudoku: Array<Array<number>> } => {
   switch (action.type) {
     case SET_GAME: {
       return {
         ...state,
-        field: (action as setFieldAction).field,
+        sudoku: (action as setFieldAction).sudoku,
       };
     }
     case SOLVE_GAME: {
-      solve(state.field);
+      const sudoku = copyField(state.sudoku);
+      solve(sudoku);
       return {
         ...state,
+        sudoku,
       };
     }
     case REVERSE_SOLVE_GAME: {
-      reverseSolve(state.field);
+      const sudoku = copyField(state.sudoku);
+      reverseSolve(sudoku);
       return {
         ...state,
+        sudoku,
       };
     }
     case RANDOM_SOLVE_GAME: {
-      solveRDM(state.field);
+      const sudoku = copyField(state.sudoku);
+      solveRDM(sudoku);
       return {
         ...state,
+        sudoku,
       };
     }
     case CLEAR_GAME: {
       return {
         ...state,
-        field: [
+        sudoku: [
           [0, 0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -67,7 +74,7 @@ export const fieldReducer = (
     case CREATE_GAME: {
       return {
         ...state,
-        field: badCreateSudoku((action as createGameAction).cues),
+        sudoku: badCreateSudoku((action as createGameAction).cues),
       };
     }
     default:
